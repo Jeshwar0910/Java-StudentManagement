@@ -1,10 +1,12 @@
 package StudentManagement;
 
 import java.util.*;
+import java.time.*;
+import java.time.format.DateTimeParseException;
 
 public class Student {
 
-	public static void main() throws Throwable {
+	public static void main(String []args) throws Throwable {
 
 		ArrayList<StudRegister> Students = new ArrayList<StudRegister>();
 		Scanner sc = new Scanner(System.in);
@@ -25,21 +27,31 @@ public class Student {
 			switch (choice) {
 			case 1:
 
-				System.out.println("Enter Student ID :");
-				int studId = sc1.nextInt();
-				;
+				
+		
+				int idCount=StudRegister.idCounter();
 				System.out.println("Enter Student Name");
 				String studName = sc1.next();
-				System.out.println("Enter Student DOB");
+				System.out.println("Enter Student DOB in YYYY-MM-DD Format");
 				String studDob = sc1.next();
-
-				Students.add(new StudRegister(studId, studName, studDob));
+				try {
+				int age = StudRegister.ageCalculation(studDob);
+				Students.add(new StudRegister(idCount, studName, studDob, age));
 				System.out.println("Student Added Successfully");
+				}catch(DateTimeParseException e ) {
+					System.out.println(e);
+				}
 				break;
+				
+			
+				
+				
+			
+				
 			case 2:
 
 				System.out.println("Enter Student ID To Update :");
-				studId = sc.nextInt();
+				int studId = sc.nextInt();
 
 				try {
 
@@ -51,10 +63,12 @@ public class Student {
 							studName = sc.next();
 							System.out.println("Enter Updated DOB :");
 							studDob = sc.next();
+							int age = StudRegister.ageCalculation(studDob);
 							Student.setstudName(studName);
 							Student.setstudDob(studDob);
+							Student.setAge(age);
 							System.out.println("Student Updated Successfully");
-						}else {
+						} else {
 							System.out.println("Record Not Found");
 						}
 
@@ -67,7 +81,7 @@ public class Student {
 			case 3:
 
 				System.out.println("Enter Student ID to Delete :");
-				studId = sc.nextInt();
+				 studId = sc.nextInt();
 				try {
 					for (StudRegister Student : Students) {
 
@@ -76,7 +90,7 @@ public class Student {
 							Students.remove(Student);
 
 							System.out.println("Student Deleted Sucessfully");
-						}else {
+						} else {
 							System.out.println("Record Not Found");
 						}
 					}
